@@ -1,62 +1,60 @@
 {
-	"name": "bueltge/rss-import",
-	"description": "A WordPress plugin that display feeds on your blog, using PHP in your templates or Shortcode in your posts and pages.",
-	"keywords": [
-		"wordpress",
-		"plugin"
-	],
-	"license": "GPL-2.0-or-later",
-	"type": "wordpress-plugin",
-	"homepage": "https://github.com/bueltge/rss-import",
-	"authors": [
-		{
-			"name": "Frank Bültge",
-			"homepage": "https://bueltge.de",
-			"email": "frank@bueltge.de",
-			"role": "Developer"
-		},
-		{
-			"name": "Guido Pannenbecker",
-			"homepage": "",
-			"email": "",
-			"role": "Developer"
-		}
-	],
-	"support": {
-		"issues": "https://github.com/bueltge/rss-import/issues"
-	},
-	"require": {
-		"php": ">=5.6",
-		"ext-json": "*"
-	},
-	"require-dev": {
-		"dealerdirect/phpcodesniffer-composer-installer": "*",
-		"phpcompatibility/phpcompatibility-wp": "^2.1",
-		"squizlabs/php_codesniffer": "^3",
-		"wp-coding-standards/wpcs": "^3.0.0",
-		"roots/wordpress": "@stable"
-	},
-	"config": {
-		"optimize-autoloader": true,
-		"sort-packages": true,
-		"allow-plugins": {
-			"composer/installers": true,
-			"roots/wordpress-core-installer": true,
-			"dealerdirect/phpcodesniffer-composer-installer": true
-		}
-	},
-	"minimum-stability": "dev",
-	"prefer-stable": true,
-	"scripts": {
-		"cs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
-		"csf": "@php ./vendor/bin/phpcbf",
-		"pu": "@php ./vendor/bin/phpunit",
-		"qa": [
-			"@cs",
-			"@pu"
-		]
-	},
-	"extra": {
-		"wordpress-install-dir": "vendor/roots/wordpress"
-	}
+  "name": "bueltge/rss-import",
+  "description": "A WordPress plugin that displays feeds on your blog, using PHP in your templates or Shortcode in your posts and pages.",
+  "keywords": [
+    "wordpress",
+    "plugin"
+  ],
+  "license": "GPL-2.0-or-later",
+  "type": "wordpress-plugin",
+  "homepage": "https://github.com/bueltge/rss-import",
+  "authors": [
+    {
+      "name": "Frank Bültge",
+      "homepage": "https://bueltge.de",
+      "email": "frank@bueltge.de",
+      "role": "Developer"
+    },
+    {
+      "name": "Guido Pannenbecker",
+      "role": "Developer"
+    }
+  ],
+  "support": {
+    "issues": "https://github.com/bueltge/rss-import/issues"
+  },
+  "require": {
+    "php": ">=7.4",
+    "ext-json": "*"
+  },
+  "require-dev": {
+    "dealerdirect/phpcodesniffer-composer-installer": "*",
+    "phpcompatibility/phpcompatibility-wp": "^2.1",
+    "squizlabs/php_codesniffer": "^3",
+    "wp-coding-standards/wpcs": "^3.0.0",
+    "roots/wordpress": "@stable"
+  },
+  "config": {
+    "optimize-autoloader": true,
+    "sort-packages": true,
+    "allow-plugins": {
+      "composer/*": true,
+      "roots/wordpress-core-installer": true,
+      "dealerdirect/phpcodesniffer-composer-installer": true
+    }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
+  "scripts": {
+    "cs": "@php ./vendor/squizlabs/php_codesniffer/bin/phpcs",
+    "csf": "@php ./vendor/bin/phpcbf",
+    "pu": "@php ./vendor/bin/phpunit",
+    "qa": [
+      "@cs",
+      "@pu"
+    ]
+  },
+  "extra": {
+    "wordpress-install-dir": "vendor/roots/wordpress"
+  }
 }

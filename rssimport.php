@@ -13,15 +13,15 @@
 
 /**
 ------------------------------------------------------------
- ACKNOWLEDGEMENTS
+ACKNOWLEDGEMENTS
 ------------------------------------------------------------
 Original and Idea: Dave Wolf, http://www.davewolf.net
 Thx to Thomas Fischer, http://www.securityfocus.de and
 Gunnar Tillmann http://www.gunnart.de for a rearrange code,
 Ilya Shindyapin, http://skookum.com for adding of paging
-*/
+ */
 
-//avoid direct calls to this file, because now WP core and framework has been used
+// avoid direct calls to this file, because now WP core and framework has been used
 if ( ! function_exists( 'add_action' ) ) {
 	header( 'Status: 403 Forbidden' );
 	header( 'HTTP/1.1 403 Forbidden' );
@@ -29,7 +29,7 @@ if ( ! function_exists( 'add_action' ) ) {
 }
 
 if ( function_exists( 'add_action' ) ) {
-	//WordPress definitions
+	// WordPress definitions
 	if ( ! defined( 'WP_CONTENT_URL' ) ) {
 		define( 'WP_CONTENT_URL', get_option( 'siteurl' ) . '/wp-content' );
 	}
@@ -69,47 +69,47 @@ if ( ! defined( 'MAGPIE_CACHE_AGE' ) ) {
 }
 
 /**
- * @param int $display
- * @param string $feedurl
- * @param string $before_desc
- * @param int $displaydescriptions
- * @param string $after_desc
- * @param int $html
- * @param int $truncatedescchar
- * @param string $truncatedescstring
- * @param int $truncatetitlechar
- * @param string $truncatetitlestring
- * @param string $before_date
- * @param int $date
- * @param string $after_date
- * @param string $date_format
- * @param string $before_creator
+ * @param int        $display
+ * @param string     $feedurl
+ * @param string     $before_desc
+ * @param int        $displaydescriptions
+ * @param string     $after_desc
+ * @param int        $html
+ * @param int        $truncatedescchar
+ * @param string     $truncatedescstring
+ * @param int        $truncatetitlechar
+ * @param string     $truncatetitlestring
+ * @param string     $before_date
+ * @param int        $date
+ * @param string     $after_date
+ * @param string     $date_format
+ * @param string     $before_creator
  * @param int|string $creator
- * @param string $after_creator
- * @param string $start_items
- * @param string $end_items
- * @param string $start_item
- * @param string $end_item
- * @param string $target
- * @param string $rel
- * @param int $desc4title
- * @param int $charsetscan
- * @param int $debug
- * @param string $before_noitems
- * @param string $noitems
- * @param string $after_noitems
- * @param string $before_error
- * @param string $error
- * @param string $after_error
- * @param int $paging
- * @param string $prev_paging_link
- * @param string $next_paging_link
- * @param string $prev_paging_title
- * @param string $next_paging_title
- * @param int $use_simplepie
- * @param int $view
- * @param int $random_sort
- * @param string $order
+ * @param string     $after_creator
+ * @param string     $start_items
+ * @param string     $end_items
+ * @param string     $start_item
+ * @param string     $end_item
+ * @param string     $target
+ * @param string     $rel
+ * @param int        $desc4title
+ * @param int        $charsetscan
+ * @param int        $debug
+ * @param string     $before_noitems
+ * @param string     $noitems
+ * @param string     $after_noitems
+ * @param string     $before_error
+ * @param string     $error
+ * @param string     $after_error
+ * @param int        $paging
+ * @param string     $prev_paging_link
+ * @param string     $next_paging_link
+ * @param string     $prev_paging_title
+ * @param string     $next_paging_title
+ * @param int        $use_simplepie
+ * @param int        $view
+ * @param int        $random_sort
+ * @param string     $order
  *
  * @return string
  */
@@ -181,11 +181,15 @@ function RSSImport(
 			if ( file_exists( ABSPATH . WPINC . '/class-simplepie.php' ) ) {
 				@require ABSPATH . WPINC . '/class-simplepie.php';
 			} else {
-				wp_die( __( 'Error in file: '
-				            . __FILE__
-				            . ' on line: '
-				            . __LINE__
-				            . '.<br />The WordPress file "class-simplepie.php" with class SimplePie could not be included.' ) );
+				wp_die(
+					__(
+						'Error in file: '
+							. __FILE__
+							. ' on line: '
+							. __LINE__
+							. '.<br />The WordPress file "class-simplepie.php" with class SimplePie could not be included.'
+					)
+				);
 			}
 		}
 	} elseif ( file_exists( ABSPATH . WPINC . '/rss.php' ) ) {
@@ -195,8 +199,12 @@ function RSSImport(
 		require_once ABSPATH . WPINC . '/rss-functions.php';
 		// In WordPress < 2.1
 	} else {
-		wp_die( __( 'Error in file: ' . __FILE__ . ' on line: ' . __LINE__
-		            . '.<br>The WordPress file "rss-functions.php" or "rss.php" could not be included.' ) );
+		wp_die(
+			__(
+				'Error in file: ' . __FILE__ . ' on line: ' . __LINE__
+					. '.<br>The WordPress file "rss-functions.php" or "rss.php" could not be included.'
+			)
+		);
 	}
 
 	$display           = (int) $display;
@@ -243,7 +251,7 @@ function RSSImport(
 			if ( ! in_array( $target, $strings, true ) ) {
 				$target = '';
 			} else {
-				$target = ' target="_' .  $target . '"';
+				$target = ' target="_' . $target . '"';
 			}
 		}
 
@@ -251,10 +259,10 @@ function RSSImport(
 			$rel = ' rel="' . $rel . '"';
 		}
 
-		$displayitems  = $display;
-		$displaylimit  = ( $page * $display );
-		$display       = ( ( $page - 1 ) * $display );
-		$picked = [];
+		$displayitems = $display;
+		$displaylimit = ( $page * $display );
+		$display      = ( ( $page - 1 ) * $display );
+		$picked       = array();
 
 		if ( $use_simplepie && ( 1 === $paging || $random_sort ) ) {
 			/** @var SimplePie $rss */
@@ -305,10 +313,12 @@ function RSSImport(
 					$picture_url = wp_filter_kses( $enclosure->get_thumbnail() );
 				}
 
-				$start_item_temp = str_replace( [ '%title%', '%href%', '%picture_url%' ],
-					[ $title, $href, $picture_url ],
-					$start_item );
-				$echo            .= $start_item_temp;
+				$start_item_temp = str_replace(
+					array( '%title%', '%href%', '%picture_url%' ),
+					array( $title, $href, $picture_url ),
+					$start_item
+				);
+				$echo           .= $start_item_temp;
 
 				// import date
 				if ( $use_simplepie && $date ) {
@@ -331,32 +341,35 @@ function RSSImport(
 				} // For import with HTML
 				elseif ( $use_simplepie && $displaydescriptions && ! $html ) {
 					$desc = str_replace(
-						[ "\n", "\r" ],
+						array( "\n", "\r" ),
 						' ',
-						esc_attr( strip_tags(
+						esc_attr(
+							strip_tags(
 								@html_entity_decode(
 									$item->get_description(),
 									ENT_QUOTES,
-									get_option( 'blog_charset' ) ) )
+									get_option( 'blog_charset' )
+								)
+							)
 						)
 					);
 				} // For import without HTML
 				elseif ( $displaydescriptions
-				         && $html
-				         && isset( $item['content']['encoded'] )
-				         && $item['content']['encoded'] !== 'A' ) {
+						&& $html
+						&& isset( $item['content']['encoded'] )
+						&& $item['content']['encoded'] !== 'A' ) {
 					$desc = $item['content']['encoded'];
 				} // For import with HTML
 				elseif ( $displaydescriptions
-				         && $html
-				         && isset( $item['content']['atom_content'] )
-				         && $item['content']['atom_content'] !== 'A' ) {
+						&& $html
+						&& isset( $item['content']['atom_content'] )
+						&& $item['content']['atom_content'] !== 'A' ) {
 					$desc = $item['content']['atom_content'];
 				} // For import with HTML
 				elseif ( $displaydescriptions
-				         && $html
-				         && isset( $item['content'] )
-				         && ! is_array( $item['content'] ) ) {
+						&& $html
+						&& isset( $item['content'] )
+						&& ! is_array( $item['content'] ) ) {
 					$desc = $item['content'];
 				} elseif ( $displaydescriptions && $html && isset( $item['description'] ) ) {
 					$desc = $item['description'];
@@ -414,9 +427,10 @@ function RSSImport(
 					$desc = '';
 					if ( $use_simplepie ) {
 						$desc = str_replace(
-							[ "\n", "\r" ],
+							array( "\n", "\r" ),
 							' ',
-							esc_attr( strip_tags(
+							esc_attr(
+								strip_tags(
 									@html_entity_decode(
 										$item->get_description(),
 										ENT_QUOTES,
@@ -426,7 +440,7 @@ function RSSImport(
 							)
 						);
 					} // For import without HTML
-                    elseif ( isset( $item['description'] ) ) {
+					elseif ( isset( $item['description'] ) ) {
 						$desc = esc_html( strip_tags( $item['description'] ) );
 					}
 					$atitle = wp_html_excerpt( $desc, $truncatedescchar ) . $truncatedescstring;
@@ -445,15 +459,15 @@ function RSSImport(
 							break;
 						case 'title':
 							$echo .= '<a'
-							         . $target
-							         . $rel
-							         . ' href="'
-							         . $href
-							         . '" title="'
-							         . $atitle
-							         . '">'
-							         . $title
-							         . '</a>';
+									. $target
+									. $rel
+									. ' href="'
+									. $href
+									. '" title="'
+									. $atitle
+									. '">'
+									. $title
+									. '</a>';
 							break;
 						case 'creator':
 							if ( isset( $creator ) && $creator && '' !== $creator ) {
@@ -463,25 +477,31 @@ function RSSImport(
 						case 'description':
 							if ( isset( $desc ) && $displaydescriptions && '' !== $desc ) {
 								$after_desc_temp  = stripslashes_deep( $after_desc );
-								$after_desc_temp  = str_replace( [ '%title%', '%href%', '%picture_url%' ],
-									[ $title, $href, $picture_url ],
-									$after_desc_temp );
-								$before_desc_temp = str_replace( [ '%title%', '%href%', '%picture_url%' ],
-									[ $title, $href, $picture_url ],
-									$before_desc );
-								$echo             .= $before_desc_temp . $desc . $after_desc_temp;
+								$after_desc_temp  = str_replace(
+									array( '%title%', '%href%', '%picture_url%' ),
+									array( $title, $href, $picture_url ),
+									$after_desc_temp
+								);
+								$before_desc_temp = str_replace(
+									array( '%title%', '%href%', '%picture_url%' ),
+									array( $title, $href, $picture_url ),
+									$before_desc
+								);
+								$echo            .= $before_desc_temp . $desc . $after_desc_temp;
 							}
 							break;
 					}
 				}
 
-				$end_item_temp = str_replace( [ '%title%', '%href%', '%picture_url%' ],
-					[ $title, $href, $picture_url ],
-					$end_item );
-				$echo          .= $end_item_temp;
+				$end_item_temp = str_replace(
+					array( '%title%', '%href%', '%picture_url%' ),
+					array( $title, $href, $picture_url ),
+					$end_item
+				);
+				$echo         .= $end_item_temp;
 			}
 
-			$display ++;
+			++$display;
 		}
 
 		if ( strip_tags( $echo ) ) { // novaclic: needed to filter out false content made of tags alone (html comments, html tags, ...)
@@ -506,23 +526,27 @@ function RSSImport(
 		$echo .= '<div class="rsspaging">';
 		if ( $previousitems ) {
 			$echo .= '<a href="'
-			         . add_query_arg( 'rsspage',
-					( $page - 1 ) )
-			         . '" class="rsspaging_prev" title="'
-			         . $prev_paging_title
-			         . '">'
-			         . $prev_paging_link
-			         . '</a>';
+					. add_query_arg(
+						'rsspage',
+						( $page - 1 )
+					)
+					. '" class="rsspaging_prev" title="'
+					. $prev_paging_title
+					. '">'
+					. $prev_paging_link
+					. '</a>';
 		}
 		if ( $nextitems ) {
 			$echo .= '<a href="'
-			         . add_query_arg( 'rsspage',
-					( $page + 1 ) )
-			         . '" class="rsspaging_next" title="'
-			         . $next_paging_title
-			         . '">'
-			         . $next_paging_link
-			         . '</a>';
+					. add_query_arg(
+						'rsspage',
+						( $page + 1 )
+					)
+					. '" class="rsspaging_next" title="'
+					. $next_paging_title
+					. '">'
+					. $next_paging_link
+					. '</a>';
 		}
 		$echo .= '<br style="clear: both" />';
 		$echo .= '</div>';
@@ -573,7 +597,7 @@ function isodec( $s_String ) {
  */
 function all_convert( $s_String ) {
 	// Array for entities
-	$umlaute = [
+	$umlaute = array(
 		'â€ž',
 		'â€œ',
 		'â€“',
@@ -958,9 +982,9 @@ function all_convert( $s_String ) {
 		chr( 254 ),
 		chr( 255 ),
 		chr( 256 ),
-	];
+	);
 
-	$htmlcode = [
+	$htmlcode = array(
 		'&bdquo;',
 		'&ldquo;',
 		'&ndash;',
@@ -1344,7 +1368,7 @@ function all_convert( $s_String ) {
 		'&yacute;',
 		'&thorn;',
 		'&yuml;',
-	];
+	);
 
 	if ( PHP_VERSION_ID >= 50000 ) {
 		$s_String = utf8_encode( html_entity_decode( str_replace( $umlaute, $htmlcode, $s_String ) ) );
@@ -1359,23 +1383,29 @@ function all_convert( $s_String ) {
 
 	// &mdash; , &#8212;
 	$s_String = preg_replace( '~\xC3\xA2\xE2\x82\xAC\xE2\x80\x9D~', '&mdash;', $s_String );
-	$s_String = preg_replace( '~\xC3\x83\xC2\xA2\xC3\xA2\xE2\x80\x9A\xC2\xAC\xC3\xA2\xE2\x82\xAC\xC2\x9D~',
+	$s_String = preg_replace(
+		'~\xC3\x83\xC2\xA2\xC3\xA2\xE2\x80\x9A\xC2\xAC\xC3\xA2\xE2\x82\xAC\xC2\x9D~',
 		'&mdash;',
-		$s_String );
+		$s_String
+	);
 	$s_String = preg_replace( '~\xD0\xB2\xD0\x82\xE2\x80\x9D~', '&mdash;', $s_String );
 
 	// &ndash; , &#8211;
 	$s_String = preg_replace( '~\xC3\xA2\xE2\x82\xAC\xE2\x80\x9C~', '&ndash;', $s_String );
-	$s_String = preg_replace( '~\xC3\x83\xC2\xA2\xC3\xA2\xE2\x80\x9A\xC2\xAC\xC3\xA2\xE2\x82\xAC\xC5\x93~',
+	$s_String = preg_replace(
+		'~\xC3\x83\xC2\xA2\xC3\xA2\xE2\x80\x9A\xC2\xAC\xC3\xA2\xE2\x82\xAC\xC5\x93~',
 		'&ndash;',
-		$s_String );
+		$s_String
+	);
 	$s_String = preg_replace( '~\xD0\xB2\xD0\x82\xE2\x80\x9C~', '&ndash;', $s_String );
 
 	// &rsquo; , &#8217;
 	$s_String = preg_replace( '~\xC3\xA2\xE2\x82\xAC\xE2\x84\xA2~', '&rsquo;', $s_String );
-	$s_String = preg_replace( '~\xC3\x83\xC2\xA2\xC3\xA2\xE2\x80\x9A\xC2\xAC\xC3\xA2\xE2\x80\x9E\xC2\xA2~',
+	$s_String = preg_replace(
+		'~\xC3\x83\xC2\xA2\xC3\xA2\xE2\x80\x9A\xC2\xAC\xC3\xA2\xE2\x80\x9E\xC2\xA2~',
 		'&rsquo;',
-		$s_String );
+		$s_String
+	);
 	$s_String = preg_replace( '~\xD0\xB2\xD0\x82\xE2\x84\xA2~', '&rsquo;', $s_String );
 	$s_String = preg_replace( '~\xD0\xBF\xD1\x97\xD0\x85~', '&rsquo;', $s_String );
 
@@ -1390,9 +1420,11 @@ function all_convert( $s_String ) {
 
 	// &ldquo; , &#8220;
 	$s_String = preg_replace( '~\xC3\xA2\xE2\x82\xAC\xC5\x93~', '&ldquo;', $s_String );
-	$s_String = preg_replace( '~\xC3\x83\xC2\xA2\xC3\xA2\xE2\x80\x9A\xC2\xAC\xC3\x85\xE2\x80\x9C~',
+	$s_String = preg_replace(
+		'~\xC3\x83\xC2\xA2\xC3\xA2\xE2\x80\x9A\xC2\xAC\xC3\x85\xE2\x80\x9C~',
 		'&ldquo;',
-		$s_String );
+		$s_String
+	);
 	$s_String = preg_replace( '~\xD0\xB2\xD0\x82\xD1\x9A~', '&ldquo;', $s_String );
 
 	// &trade; , &#8482;
@@ -1435,7 +1467,7 @@ function RSSImport_end_on_word( $str ) {
  */
 function RSSImport_Shortcode( $atts ) {
 	$args = shortcode_atts(
-		[
+		array(
 			'display'             => 5,
 			'feedurl'             => 'https://bueltge.de/feed/',
 			'before_desc'         => '<br />',
@@ -1466,8 +1498,10 @@ function RSSImport_Shortcode( $atts ) {
 			'noitems'             => __( 'No items, feed is empty.', FB_RSSI_TEXTDOMAIN ),
 			'after_noitems'       => '</p>',
 			'before_error'        => '<p>',
-			'error'               => __( 'Error: Feed has an error or is not valid.',
-				FB_RSSI_TEXTDOMAIN ),
+			'error'               => __(
+				'Error: Feed has an error or is not valid.',
+				FB_RSSI_TEXTDOMAIN
+			),
 			'after_error'         => '</p>',
 			'paging'              => 0,
 			'prev_paging_link'    => __( '&laquo; Previous', FB_RSSI_TEXTDOMAIN ),
@@ -1478,12 +1512,12 @@ function RSSImport_Shortcode( $atts ) {
 			'view'                => 0,
 			'random_sort'         => 0,
 			'order'               => 'date,title,creator,description',
-		],
+		),
 		$atts
 	);
 
 	$display = $args['display'];
-	$feedurl = html_entity_decode( $args['feedurl'] ); // novaclic: undo encoding due to wordpress WYSIWYG editor
+	$feedurl = html_entity_decode( $args['feedurl'] ); // novaclic: undo encoding due to WordPress WYSIWYG editor
 	if ( 'true' === strtolower( $args['html'] ) ) {
 		$args['html'] = 1;
 	}
@@ -1626,14 +1660,14 @@ function RSSImport_shortcode_quot( $pee ) {
 function RSSImport_insert_button() {
 	global $pagenow;
 
-	$post_page_pages = [ 'post-new.php', 'post.php', 'page-new.php', 'page.php' ];
+	$post_page_pages = array( 'post-new.php', 'post.php', 'page-new.php', 'page.php' );
 	if ( ! in_array( $pagenow, $post_page_pages, true ) ) {
 		return;
 	}
 
 	?>
-    <script type="text/javascript" charset="utf-8">
-        /* Adding Quicktag buttons to the editor WordPress ver. 3.3 and above
+	<script type="text/javascript" charset="utf-8">
+		/* Adding Quicktag buttons to the editor WordPress ver. 3.3 and above
 		 * - Button HTML ID (required)
 		 * - Button display, value="" attribute (required)
 		 * - Opening Tag (required)
@@ -1642,22 +1676,22 @@ function RSSImport_insert_button() {
 		 * - Title, title="" attribute (optional)
 		 * - Priority/position on bar, 1-9 = first, 11-19 = second, 21-29 = third, etc. (optional)
 		 */
-        var id = 'rssimport',
-            text = '<?php _e( 'RSSImport', FB_RSSI_TEXTDOMAIN ); ?>',
-            start = '[RSSImport display="5" feedurl="http://feedurl.com/" before_desc="<br />" displaydescriptions="TRUE" after_desc=" " ' +
-                'html="FALSE" truncatedescchar="200" truncatedescstring=" ... " truncatetitlechar="" truncatetitlestring=" ... " ' +
-                'before_date=" <small>" date="FALSE" after_date="</small>" date_format="" before_creator=" <small>" creator="FALSE" ' +
-                'after_creator="</small>" start_items="<ul>" end_items="</ul>" start_item="<li>" end_item="</li>" target="" rel="" ' +
-                'desc4title="" charsetscan="FALSE" debug="FALSE" before_noitems="<p>" noitems="No items, feed is empty." ' +
-                'after_noitems="</p>" before_error="<p>" error="Error: Feed has an error or is not valid" after_error="</p>" ' +
-                'paging="FALSE" prev_paging_link="&laquo; Previous" next_paging_link="Next &raquo;" prev_paging_title="more items" ' +
-                'next_paging_title="more items" use_simplepie="FALSE" random_sort="FALSE"]',
-            end = '',
-            access = 'r',
-            title = '<?php _e( 'Import a feed with RSSImport', FB_RSSI_TEXTDOMAIN ); ?>';
+		var id = 'rssimport',
+			text = '<?php _e( 'RSSImport', FB_RSSI_TEXTDOMAIN ); ?>',
+			start = '[RSSImport display="5" feedurl="http://feedurl.com/" before_desc="<br />" displaydescriptions="TRUE" after_desc=" " ' +
+				'html="FALSE" truncatedescchar="200" truncatedescstring=" ... " truncatetitlechar="" truncatetitlestring=" ... " ' +
+				'before_date=" <small>" date="FALSE" after_date="</small>" date_format="" before_creator=" <small>" creator="FALSE" ' +
+				'after_creator="</small>" start_items="<ul>" end_items="</ul>" start_item="<li>" end_item="</li>" target="" rel="" ' +
+				'desc4title="" charsetscan="FALSE" debug="FALSE" before_noitems="<p>" noitems="No items, feed is empty." ' +
+				'after_noitems="</p>" before_error="<p>" error="Error: Feed has an error or is not valid" after_error="</p>" ' +
+				'paging="FALSE" prev_paging_link="&laquo; Previous" next_paging_link="Next &raquo;" prev_paging_title="more items" ' +
+				'next_paging_title="more items" use_simplepie="FALSE" random_sort="FALSE"]',
+			end = '',
+			access = 'r',
+			title = '<?php _e( 'Import a feed with RSSImport', FB_RSSI_TEXTDOMAIN ); ?>';
 
-        QTags.addButton(id, text, start, end, access);
-    </script>
+		QTags.addButton(id, text, start, end, access);
+	</script>
 	<?php
 }
 
@@ -1667,7 +1701,7 @@ function RSSImport_insert_button() {
 function RSSImport_insert_button_old() {
 	global $pagenow;
 
-	$post_page_pages = [ 'post-new.php', 'post.php', 'page-new.php', 'page.php' ];
+	$post_page_pages = array( 'post-new.php', 'post.php', 'page-new.php', 'page.php' );
 	if ( ! in_array( $pagenow, $post_page_pages, true ) ) {
 		return;
 	}
@@ -1682,20 +1716,20 @@ function RSSImport_insert_button_old() {
 			
 			edButtons[length] = new edButton(
 				\'RSSImport\', \'$context\', \'[RSSImport display="5" feedurl="http://feedurl.com/"'
-	     .
-	     ' before_desc="<br />" displaydescriptions="TRUE" after_desc=" " html="FALSE" truncatedescchar="200" truncatedescstring=" ... "'
-	     .
-	     ' truncatetitlechar=" " truncatetitlestring=" ... " before_date=" <small>" date="FALSE" after_date="</small>"'
-	     .
-	     ' date_format="" before_creator=" <small>" creator="FALSE" after_creator="</small>" start_items="<ul>" end_items="</ul>"'
-	     .
-	     ' start_item="<li>" end_item="</li>" target="" rel="" desc4title="" charsetscan="FALSE" debug="FALSE" before_noitems="<p>"'
-	     .
-	     ' noitems="No items, feed is empty." after_noitems="</p>" before_error="<p>" error="Error: Feed has an error or is not valid"'
-	     .
-	     ' after_error="</p>" paging="FALSE" prev_paging_link="&laquo; Previous" next_paging_link="Next &raquo;"'
-	     .
-	     ' prev_paging_title="more items" next_paging_title="more items" use_simplepie="FALSE"]\', \'\', \'\'
+		.
+		' before_desc="<br />" displaydescriptions="TRUE" after_desc=" " html="FALSE" truncatedescchar="200" truncatedescstring=" ... "'
+		.
+		' truncatetitlechar=" " truncatetitlestring=" ... " before_date=" <small>" date="FALSE" after_date="</small>"'
+		.
+		' date_format="" before_creator=" <small>" creator="FALSE" after_creator="</small>" start_items="<ul>" end_items="</ul>"'
+		.
+		' start_item="<li>" end_item="</li>" target="" rel="" desc4title="" charsetscan="FALSE" debug="FALSE" before_noitems="<p>"'
+		.
+		' noitems="No items, feed is empty." after_noitems="</p>" before_error="<p>" error="Error: Feed has an error or is not valid"'
+		.
+		' after_error="</p>" paging="FALSE" prev_paging_link="&laquo; Previous" next_paging_link="Next &raquo;"'
+		.
+		' prev_paging_title="more items" next_paging_title="more items" use_simplepie="FALSE"]\', \'\', \'\'
 			);
 			
 			function RSSImport_tag( id ) {
@@ -1704,10 +1738,10 @@ function RSSImport_insert_button_old() {
 			}
 			jQuery( document ).ready( function() {
 				content = \'<input id="RSSImport_\' + length + \'" class="ed_button" type="button" value="'
-	     . __( 'RSSImport', FB_RSSI_TEXTDOMAIN )
-	     . '" title="'
-	     . __( 'Import a feed with RSSImport', FB_RSSI_TEXTDOMAIN )
-	     . '" onclick="RSSImport_tag(this.id);" />\';
+		. __( 'RSSImport', FB_RSSI_TEXTDOMAIN )
+		. '" title="'
+		. __( 'Import a feed with RSSImport', FB_RSSI_TEXTDOMAIN )
+		. '" onclick="RSSImport_tag(this.id);" />\';
 				jQuery( "#ed_toolbar" ).append( content );
 			} );
 		}
@@ -1748,16 +1782,18 @@ function RSSImport_code_to_utf8( $num ) {
 
 	if ( $num <= 0xFFFF ) {
 		return chr( ( $num >> 0x0C ) + 0xE0 ) .
-		       chr( ( ( $num >> 0x06 ) & 0x3F ) + 0x80 ) .
-		       chr( ( $num & 0x3F ) + 0x80 );
+				chr( ( ( $num >> 0x06 ) & 0x3F ) + 0x80 ) .
+				chr( ( $num & 0x3F ) + 0x80 );
 	}
 
 	if ( $num <= 0x1FFFFF ) {
 		return chr( ( $num >> 0x12 ) + 0xF0 )
-		       . chr( ( ( $num >> 0x0C ) & 0x3F ) + 0x80 )
-		       . chr( ( ( $num >> 0x06 )
-		                & 0x3F ) + 0x80 )
-		       . chr( ( $num & 0x3F ) + 0x80 );
+				. chr( ( ( $num >> 0x0C ) & 0x3F ) + 0x80 )
+				. chr(
+					( ( $num >> 0x06 )
+						& 0x3F ) + 0x80
+				)
+				. chr( ( $num & 0x3F ) + 0x80 );
 	}
 
 	return '';
@@ -1772,7 +1808,7 @@ function RSSImport_code_to_utf8( $num ) {
  * @package WP-RSSImport
  */
 function RSSImport_html_entity_decode_php4( $str ) {
-	$htmlentities = [
+	$htmlentities = array(
 		'&Aacute;'   => chr( 195 ) . chr( 129 ),
 		'&aacute;'   => chr( 195 ) . chr( 161 ),
 		'&Acirc;'    => chr( 195 ) . chr( 130 ),
@@ -2024,7 +2060,7 @@ function RSSImport_html_entity_decode_php4( $str ) {
 		'&zwnj;'     => chr( 226 ) . chr( 128 ) . chr( 140 ),
 		'&gt;'       => '>',
 		'&lt;'       => '<',
-	];
+	);
 
 	$return = strtr( $str, $htmlentities );
 	$return = preg_replace( '/~&#x([0-9a-f]+);i/', 'RSSImport_code_to_utf8( hexdec( "\\1" ) )', $return );
@@ -2044,10 +2080,10 @@ if ( class_exists( 'WP_Widget' ) ) {
 		 * RSSImport_Widget constructor.
 		 */
 		public function __construct() {
-			$widget_ops = [
+			$widget_ops = array(
 				'classname'   => 'rssimport',
 				'description' => __( 'Entries from any RSS or Atom feed', FB_RSSI_TEXTDOMAIN ),
-			];
+			);
 			parent::__construct( 'rssimport', __( 'RSSImport' ), $widget_ops );
 		}
 
@@ -2144,8 +2180,10 @@ if ( class_exists( 'WP_Widget' ) ) {
 				? '<p>'
 				: $instance['before_noitems'];
 			$noitems             = empty( $instance['noitems'] )
-				? __( 'No items, feed is empty.',
-					FB_RSSI_TEXTDOMAIN )
+				? __(
+					'No items, feed is empty.',
+					FB_RSSI_TEXTDOMAIN
+				)
 				: $instance['noitems'];
 			$after_noitems       = empty( $instance['after_noitems'] )
 				? '</p>'
@@ -2154,8 +2192,10 @@ if ( class_exists( 'WP_Widget' ) ) {
 				? '<p>'
 				: $instance['before_error'];
 			$error               = empty( $instance['error'] )
-				? __( 'Error: Feed has an error or is not valid',
-					FB_RSSI_TEXTDOMAIN )
+				? __(
+					'Error: Feed has an error or is not valid',
+					FB_RSSI_TEXTDOMAIN
+				)
 				: $instance['error'];
 			$after_error         = empty( $instance['after_error'] )
 				? '</p>'
@@ -2164,8 +2204,10 @@ if ( class_exists( 'WP_Widget' ) ) {
 				? '0'
 				: $instance['paging'];
 			$prev_paging_link    = empty( $instance['prev_paging_link'] )
-				? __( '&laquo; Previous',
-					FB_RSSI_TEXTDOMAIN )
+				? __(
+					'&laquo; Previous',
+					FB_RSSI_TEXTDOMAIN
+				)
 				: $instance['prev_paging_link'];
 			$next_paging_link    = empty( $instance['next_paging_link'] )
 				? __( 'Next &raquo;', FB_RSSI_TEXTDOMAIN )
@@ -2299,7 +2341,7 @@ if ( class_exists( 'WP_Widget' ) ) {
 		public function form( $instance ) {
 			$instance = wp_parse_args(
 				(array) $instance,
-				[
+				array(
 					'title'               => '',
 					'titlelink'           => '',
 					'display'             => 5,
@@ -2333,8 +2375,10 @@ if ( class_exists( 'WP_Widget' ) ) {
 					'noitems'             => __( 'No items, feed is empty.', FB_RSSI_TEXTDOMAIN ),
 					'after_noitems'       => '</p>',
 					'before_error'        => '<p>',
-					'error'               => __( 'Error: Feed has an error or is not valid',
-						FB_RSSI_TEXTDOMAIN ),
+					'error'               => __(
+						'Error: Feed has an error or is not valid',
+						FB_RSSI_TEXTDOMAIN
+					),
 					'after_error'         => '</p>',
 					'paging'              => 0,
 					'prev_paging_link'    => __( '&laquo; Previous', FB_RSSI_TEXTDOMAIN ),
@@ -2344,7 +2388,7 @@ if ( class_exists( 'WP_Widget' ) ) {
 					'use_simplepie'       => 1,
 					'random_sort'         => 0,
 					'order'               => 'date,title,creator,description',
-				]
+				)
 			);
 
 			$title               = format_to_edit( strip_tags( $instance['title'] ) );
@@ -2391,464 +2435,774 @@ if ( class_exists( 'WP_Widget' ) ) {
 			$random_sort         = (int) $instance['random_sort'];
 			$order               = format_to_edit( $instance['order'] );
 			?>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'title' ); ?>"
-                        name="<?php echo $this->get_field_name( 'title' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $title ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'titlelink' ); ?>"><?php _e( 'URL for Title (incl. http://):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'titlelink' ); ?>"
-                        name="<?php echo $this->get_field_name( 'titlelink' ); ?>"
-                        type="text"
-                        value="<?php echo esc_url( $titlelink ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'display' ); ?>"><?php _e( 'Display:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'display' ); ?>"
-                        name="<?php echo $this->get_field_name( 'display' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $display ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'feedurl' ); ?>"><?php _e( 'FeedURL:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'feedurl' ); ?>"
-                        name="<?php echo $this->get_field_name( 'feedurl' ); ?>"
-                        type="text"
-                        value="<?php echo $feedurl; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'before_desc' ); ?>"><?php _e( 'Before Description:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'before_desc' ); ?>"
-                        name="<?php echo $this->get_field_name( 'before_desc' ); ?>"
-                        type="text"
-                        value="<?php echo $before_desc; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'displaydescriptions' ); ?>"><?php _e( 'Display Description:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'displaydescriptions' ); ?>"
-                        name="<?php echo $this->get_field_name( 'displaydescriptions' ); ?>">
-                        <option value="0"<?php if ( $displaydescriptions === '0' ) {
+			<p>
+				<label for="<?php echo $this->get_field_id( 'title' ); ?>"><?php _e( 'Title:', FB_RSSI_TEXTDOMAIN ); ?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'title' ); ?>"
+						name="<?php echo $this->get_field_name( 'title' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $title ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'titlelink' ); ?>">
+										<?php
+										_e(
+											'URL for Title (incl. http://):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'titlelink' ); ?>"
+						name="<?php echo $this->get_field_name( 'titlelink' ); ?>"
+						type="text"
+						value="<?php echo esc_url( $titlelink ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'display' ); ?>">
+										<?php
+										_e(
+											'Display:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'display' ); ?>"
+						name="<?php echo $this->get_field_name( 'display' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $display ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'feedurl' ); ?>">
+										<?php
+										_e(
+											'FeedURL:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'feedurl' ); ?>"
+						name="<?php echo $this->get_field_name( 'feedurl' ); ?>"
+						type="text"
+						value="<?php echo $feedurl; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'before_desc' ); ?>">
+										<?php
+										_e(
+											'Before Description:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'before_desc' ); ?>"
+						name="<?php echo $this->get_field_name( 'before_desc' ); ?>"
+						type="text"
+						value="<?php echo $before_desc; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'displaydescriptions' ); ?>">
+										<?php
+										_e(
+											'Display Description:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<select id="<?php echo $this->get_field_id( 'displaydescriptions' ); ?>"
+						name="<?php echo $this->get_field_name( 'displaydescriptions' ); ?>">
+						<option value="0"
+						<?php
+						if ( $displaydescriptions === '0' ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $displaydescriptions === '1' ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $displaydescriptions === '1' ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'after_desc' ); ?>"><?php _e( 'After Description:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'after_desc' ); ?>"
-                        name="<?php echo $this->get_field_name( 'after_desc' ); ?>"
-                        type="text"
-                        value="<?php echo $after_desc; ?>" /></label>
-                <br />
-                <small><?php _e( 'You can use the following strings to create custom links:', FB_RSSI_TEXTDOMAIN ); ?>
-                    <code>%title%</code>, <code>%href%</code>
-                    <br /><?php _e( 'Example:', FB_RSSI_TEXTDOMAIN ); ?>
-                    <code>&lt;a href="%href%" target="self" rel="follow"&gt;%title%&lt;/a&gt;</code></small>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'html' ); ?>"><?php _e( 'HTML:', FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'html' ); ?>"
-                        name="<?php echo $this->get_field_name( 'html' ); ?>">
-                        <option value="0"<?php if ( ! $html ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'after_desc' ); ?>">
+										<?php
+										_e(
+											'After Description:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'after_desc' ); ?>"
+						name="<?php echo $this->get_field_name( 'after_desc' ); ?>"
+						type="text"
+						value="<?php echo $after_desc; ?>" /></label>
+				<br />
+				<small><?php _e( 'You can use the following strings to create custom links:', FB_RSSI_TEXTDOMAIN ); ?>
+					<code>%title%</code>, <code>%href%</code>
+					<br /><?php _e( 'Example:', FB_RSSI_TEXTDOMAIN ); ?>
+					<code>&lt;a href="%href%" target="self" rel="follow"&gt;%title%&lt;/a&gt;</code></small>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'html' ); ?>"><?php _e( 'HTML:', FB_RSSI_TEXTDOMAIN ); ?>
+					<select id="<?php echo $this->get_field_id( 'html' ); ?>"
+						name="<?php echo $this->get_field_name( 'html' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $html ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $html ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $html ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'truncatedescchar' ); ?>"><?php _e( 'Truncate Description Char:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'truncatedescchar' ); ?>"
-                        name="<?php echo $this->get_field_name( 'truncatedescchar' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $truncatedescchar ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'truncatedescstring' ); ?>"><?php _e( 'Truncate Description String (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'truncatedescstring' ); ?>"
-                        name="<?php echo $this->get_field_name( 'truncatedescstring' ); ?>"
-                        type="text"
-                        value="<?php echo $truncatedescstring; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'truncatetitlechar' ); ?>"><?php _e( 'Truncate Title Char:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'truncatetitlechar' ); ?>"
-                        name="<?php echo $this->get_field_name( 'truncatetitlechar' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $truncatetitlechar ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'truncatetitlestring' ); ?>"><?php _e( 'Truncate Title String (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'truncatetitlestring' ); ?>"
-                        name="<?php echo $this->get_field_name( 'truncatetitlestring' ); ?>"
-                        type="text"
-                        value="<?php echo $truncatetitlestring; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'before_date' ); ?>"><?php _e( 'Before Date (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'before_date' ); ?>"
-                        name="<?php echo $this->get_field_name( 'before_date' ); ?>"
-                        type="text"
-                        value="<?php echo $before_date; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'date' ); ?>"><?php _e( 'Date:', FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'date' ); ?>"
-                        name="<?php echo $this->get_field_name( 'date' ); ?>">
-                        <option value="0"<?php if ( ! $date ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'truncatedescchar' ); ?>">
+										<?php
+										_e(
+											'Truncate Description Char:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'truncatedescchar' ); ?>"
+						name="<?php echo $this->get_field_name( 'truncatedescchar' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $truncatedescchar ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'truncatedescstring' ); ?>">
+										<?php
+										_e(
+											'Truncate Description String (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'truncatedescstring' ); ?>"
+						name="<?php echo $this->get_field_name( 'truncatedescstring' ); ?>"
+						type="text"
+						value="<?php echo $truncatedescstring; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'truncatetitlechar' ); ?>">
+										<?php
+										_e(
+											'Truncate Title Char:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'truncatetitlechar' ); ?>"
+						name="<?php echo $this->get_field_name( 'truncatetitlechar' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $truncatetitlechar ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'truncatetitlestring' ); ?>">
+										<?php
+										_e(
+											'Truncate Title String (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'truncatetitlestring' ); ?>"
+						name="<?php echo $this->get_field_name( 'truncatetitlestring' ); ?>"
+						type="text"
+						value="<?php echo $truncatetitlestring; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'before_date' ); ?>">
+										<?php
+										_e(
+											'Before Date (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'before_date' ); ?>"
+						name="<?php echo $this->get_field_name( 'before_date' ); ?>"
+						type="text"
+						value="<?php echo $before_date; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'date' ); ?>"><?php _e( 'Date:', FB_RSSI_TEXTDOMAIN ); ?>
+					<select id="<?php echo $this->get_field_id( 'date' ); ?>"
+						name="<?php echo $this->get_field_name( 'date' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $date ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $date ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $date ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'after_date' ); ?>"><?php _e( 'After Date (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'after_date' ); ?>"
-                        name="<?php echo $this->get_field_name( 'after_date' ); ?>"
-                        type="text"
-                        value="<?php echo $after_date; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'date_format' ); ?>"><?php _e( 'Date Formatting:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'date_format' ); ?>"
-                        name="<?php echo $this->get_field_name( 'date_format' ); ?>"
-                        type="text"
-                        value="<?php echo $date_format; ?>" /></label>
-                <br />
-                <small><?php _e( 'Leave empty for use the date format of your WordPress settings.',
-						FB_RSSI_TEXTDOMAIN ); ?>
-                    <a href="http://codex.wordpress.org/Formatting_Date_and_Time"><?php _e( 'Documentation on date formatting',
-							FB_RSSI_TEXTDOMAIN ); ?></a>
-                </small>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'before_creator' ); ?>"><?php _e( 'Before Creator (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'before_creator' ); ?>"
-                        name="<?php echo $this->get_field_name( 'before_creator' ); ?>"
-                        type="text"
-                        value="<?php echo $before_creator; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'creator' ); ?>"><?php _e( 'Creator:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'creator' ); ?>"
-                        name="<?php echo $this->get_field_name( 'creator' ); ?>">
-                        <option value="0"<?php if ( ! $creator ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'after_date' ); ?>">
+										<?php
+										_e(
+											'After Date (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'after_date' ); ?>"
+						name="<?php echo $this->get_field_name( 'after_date' ); ?>"
+						type="text"
+						value="<?php echo $after_date; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'date_format' ); ?>">
+										<?php
+										_e(
+											'Date Formatting:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'date_format' ); ?>"
+						name="<?php echo $this->get_field_name( 'date_format' ); ?>"
+						type="text"
+						value="<?php echo $date_format; ?>" /></label>
+				<br />
+				<small>
+				<?php
+				_e(
+					'Leave empty for use the date format of your WordPress settings.',
+					FB_RSSI_TEXTDOMAIN
+				);
+				?>
+					<a href="http://codex.wordpress.org/Formatting_Date_and_Time">
+					<?php
+					_e(
+						'Documentation on date formatting',
+						FB_RSSI_TEXTDOMAIN
+					);
+					?>
+							</a>
+				</small>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'before_creator' ); ?>">
+										<?php
+										_e(
+											'Before Creator (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'before_creator' ); ?>"
+						name="<?php echo $this->get_field_name( 'before_creator' ); ?>"
+						type="text"
+						value="<?php echo $before_creator; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'creator' ); ?>">
+										<?php
+										_e(
+											'Creator:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<select id="<?php echo $this->get_field_id( 'creator' ); ?>"
+						name="<?php echo $this->get_field_name( 'creator' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $creator ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $creator ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $creator ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'after_creator' ); ?>"><?php _e( 'After Creator (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'after_creator' ); ?>"
-                        name="<?php echo $this->get_field_name( 'after_creator' ); ?>"
-                        type="text"
-                        value="<?php echo $after_creator; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'start_items' ); ?>"><?php _e( 'Before Items (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'start_items' ); ?>"
-                        name="<?php echo $this->get_field_name( 'start_items' ); ?>"
-                        type="text"
-                        value="<?php echo $start_items; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'end_items' ); ?>"><?php _e( 'After Items (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'end_items' ); ?>"
-                        name="<?php echo $this->get_field_name( 'end_items' ); ?>"
-                        type="text"
-                        value="<?php echo $end_items; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'start_item' ); ?>"><?php _e( 'Before Item (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'start_item' ); ?>"
-                        name="<?php echo $this->get_field_name( 'start_item' ); ?>"
-                        type="text"
-                        value="<?php echo $start_item; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'end_item' ); ?>"><?php _e( 'After Item (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'end_item' ); ?>"
-                        name="<?php echo $this->get_field_name( 'end_item' ); ?>"
-                        type="text"
-                        value="<?php echo $end_item; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'target' ); ?>"><?php _e( 'Target Attribut:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'target' ); ?>"
-                        name="<?php echo $this->get_field_name( 'target' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $target ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'rel' ); ?>"><?php _e( 'Rel Attribut:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'rel' ); ?>"
-                        name="<?php echo $this->get_field_name( 'rel' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $rel ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'desc4title' ); ?>"><?php _e( 'Desc4Title:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'desc4title' ); ?>"
-                        name="<?php echo $this->get_field_name( 'desc4title' ); ?>">
-                        <option value="0"<?php if ( ! $desc4title ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'after_creator' ); ?>">
+										<?php
+										_e(
+											'After Creator (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'after_creator' ); ?>"
+						name="<?php echo $this->get_field_name( 'after_creator' ); ?>"
+						type="text"
+						value="<?php echo $after_creator; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'start_items' ); ?>">
+										<?php
+										_e(
+											'Before Items (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'start_items' ); ?>"
+						name="<?php echo $this->get_field_name( 'start_items' ); ?>"
+						type="text"
+						value="<?php echo $start_items; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'end_items' ); ?>">
+										<?php
+										_e(
+											'After Items (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'end_items' ); ?>"
+						name="<?php echo $this->get_field_name( 'end_items' ); ?>"
+						type="text"
+						value="<?php echo $end_items; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'start_item' ); ?>">
+										<?php
+										_e(
+											'Before Item (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'start_item' ); ?>"
+						name="<?php echo $this->get_field_name( 'start_item' ); ?>"
+						type="text"
+						value="<?php echo $start_item; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'end_item' ); ?>">
+										<?php
+										_e(
+											'After Item (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'end_item' ); ?>"
+						name="<?php echo $this->get_field_name( 'end_item' ); ?>"
+						type="text"
+						value="<?php echo $end_item; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'target' ); ?>">
+										<?php
+										_e(
+											'Target Attribut:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'target' ); ?>"
+						name="<?php echo $this->get_field_name( 'target' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $target ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'rel' ); ?>">
+										<?php
+										_e(
+											'Rel Attribut:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'rel' ); ?>"
+						name="<?php echo $this->get_field_name( 'rel' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $rel ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'desc4title' ); ?>">
+										<?php
+										_e(
+											'Desc4Title:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<select id="<?php echo $this->get_field_id( 'desc4title' ); ?>"
+						name="<?php echo $this->get_field_name( 'desc4title' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $desc4title ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $desc4title ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $desc4title ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-                <br />
-                <small><?php _e( 'Description for title-Attribut on Title-Link', FB_RSSI_TEXTDOMAIN ); ?></small>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'charsetscan' ); ?>"><?php _e( 'Charsetscan:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'charsetscan' ); ?>"
-                        name="<?php echo $this->get_field_name( 'charsetscan' ); ?>">
-                        <option value="0"<?php if ( ! $charsetscan ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+				<br />
+				<small><?php _e( 'Description for title-Attribut on Title-Link', FB_RSSI_TEXTDOMAIN ); ?></small>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'charsetscan' ); ?>">
+										<?php
+										_e(
+											'Charsetscan:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<select id="<?php echo $this->get_field_id( 'charsetscan' ); ?>"
+						name="<?php echo $this->get_field_name( 'charsetscan' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $charsetscan ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $charsetscan ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $charsetscan ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'debug' ); ?>"><?php _e( 'Debug mode:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'debug' ); ?>"
-                        name="<?php echo $this->get_field_name( 'debug' ); ?>">
-                        <option value="0"<?php if ( ! $debug ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'debug' ); ?>">
+										<?php
+										_e(
+											'Debug mode:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<select id="<?php echo $this->get_field_id( 'debug' ); ?>"
+						name="<?php echo $this->get_field_name( 'debug' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $debug ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $debug ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $debug ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'before_noitems' ); ?>"><?php _e( 'Before <em>No</em> Items Message (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'before_noitems' ); ?>"
-                        name="<?php echo $this->get_field_name( 'before_noitems' ); ?>"
-                        type="text"
-                        value="<?php echo $before_noitems; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'noitems' ); ?>"><?php _e( '<em>No</em> Items Message:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'noitems' ); ?>"
-                        name="<?php echo $this->get_field_name( 'noitems' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $noitems ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'after_noitems' ); ?>"><?php _e( 'After <em>No</em> Items Message (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'after_noitems' ); ?>"
-                        name="<?php echo $this->get_field_name( 'after_noitems' ); ?>"
-                        type="text"
-                        value="<?php echo $after_noitems; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'before_error' ); ?>"><?php _e( 'Before Error Message (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'before_error' ); ?>"
-                        name="<?php echo $this->get_field_name( 'before_error' ); ?>"
-                        type="text"
-                        value="<?php echo $before_error; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'error' ); ?>"><?php _e( 'Error Message:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'error' ); ?>"
-                        name="<?php echo $this->get_field_name( 'error' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $error ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'after_error' ); ?>"><?php _e( 'After Error Message (HTML):',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'after_error' ); ?>"
-                        name="<?php echo $this->get_field_name( 'after_error' ); ?>"
-                        type="text"
-                        value="<?php echo $after_error; ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'paging' ); ?>"><?php _e( 'Pagination:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'paging' ); ?>"
-                        name="<?php echo $this->get_field_name( 'paging' ); ?>">
-                        <option value="0"<?php if ( ! $paging ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'before_noitems' ); ?>">
+										<?php
+										_e(
+											'Before <em>No</em> Items Message (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'before_noitems' ); ?>"
+						name="<?php echo $this->get_field_name( 'before_noitems' ); ?>"
+						type="text"
+						value="<?php echo $before_noitems; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'noitems' ); ?>">
+										<?php
+										_e(
+											'<em>No</em> Items Message:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'noitems' ); ?>"
+						name="<?php echo $this->get_field_name( 'noitems' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $noitems ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'after_noitems' ); ?>">
+										<?php
+										_e(
+											'After <em>No</em> Items Message (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'after_noitems' ); ?>"
+						name="<?php echo $this->get_field_name( 'after_noitems' ); ?>"
+						type="text"
+						value="<?php echo $after_noitems; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'before_error' ); ?>">
+										<?php
+										_e(
+											'Before Error Message (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'before_error' ); ?>"
+						name="<?php echo $this->get_field_name( 'before_error' ); ?>"
+						type="text"
+						value="<?php echo $before_error; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'error' ); ?>">
+										<?php
+										_e(
+											'Error Message:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'error' ); ?>"
+						name="<?php echo $this->get_field_name( 'error' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $error ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'after_error' ); ?>">
+										<?php
+										_e(
+											'After Error Message (HTML):',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'after_error' ); ?>"
+						name="<?php echo $this->get_field_name( 'after_error' ); ?>"
+						type="text"
+						value="<?php echo $after_error; ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'paging' ); ?>">
+										<?php
+										_e(
+											'Pagination:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<select id="<?php echo $this->get_field_id( 'paging' ); ?>"
+						name="<?php echo $this->get_field_name( 'paging' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $paging ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $paging ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $paging ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'prev_paging_link' ); ?>"><?php _e( 'Previous Pagination Link String:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'prev_paging_link' ); ?>"
-                        name="<?php echo $this->get_field_name( 'prev_paging_link' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $prev_paging_link ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'next_paging_link' ); ?>"><?php _e( 'Next Pagination Link String:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'next_paging_link' ); ?>"
-                        name="<?php echo $this->get_field_name( 'next_paging_link' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $next_paging_link ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'prev_paging_title' ); ?>"><?php _e( 'Previous Pagination Title String:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'prev_paging_title' ); ?>"
-                        name="<?php echo $this->get_field_name( 'prev_paging_title' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $prev_paging_title ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'next_paging_title' ); ?>"><?php _e( 'Next Pagination Title String:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat"
-                        id="<?php echo $this->get_field_id( 'next_paging_title' ); ?>"
-                        name="<?php echo $this->get_field_name( 'next_paging_title' ); ?>"
-                        type="text"
-                        value="<?php echo esc_attr( $next_paging_title ); ?>" /></label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'use_simplepie' ); ?>"><?php _e( 'Use SimplePie class:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'use_simplepie' ); ?>"
-                        name="<?php echo $this->get_field_name( 'use_simplepie' ); ?>">
-                        <option value="0"<?php if ( ! $use_simplepie ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'prev_paging_link' ); ?>">
+										<?php
+										_e(
+											'Previous Pagination Link String:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'prev_paging_link' ); ?>"
+						name="<?php echo $this->get_field_name( 'prev_paging_link' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $prev_paging_link ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'next_paging_link' ); ?>">
+										<?php
+										_e(
+											'Next Pagination Link String:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'next_paging_link' ); ?>"
+						name="<?php echo $this->get_field_name( 'next_paging_link' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $next_paging_link ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'prev_paging_title' ); ?>">
+										<?php
+										_e(
+											'Previous Pagination Title String:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'prev_paging_title' ); ?>"
+						name="<?php echo $this->get_field_name( 'prev_paging_title' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $prev_paging_title ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'next_paging_title' ); ?>">
+										<?php
+										_e(
+											'Next Pagination Title String:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat"
+						id="<?php echo $this->get_field_id( 'next_paging_title' ); ?>"
+						name="<?php echo $this->get_field_name( 'next_paging_title' ); ?>"
+						type="text"
+						value="<?php echo esc_attr( $next_paging_title ); ?>" /></label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'use_simplepie' ); ?>">
+										<?php
+										_e(
+											'Use SimplePie class:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<select id="<?php echo $this->get_field_id( 'use_simplepie' ); ?>"
+						name="<?php echo $this->get_field_name( 'use_simplepie' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $use_simplepie ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $use_simplepie ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $use_simplepie ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'view' ); ?>"><?php _e( 'Echo/Return:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'view' ); ?>"
-                        name="<?php echo $this->get_field_name( 'view' ); ?>">
-                        <option value="0"<?php if ( ! $view ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'view' ); ?>">
+										<?php
+										_e(
+											'Echo/Return:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<select id="<?php echo $this->get_field_id( 'view' ); ?>"
+						name="<?php echo $this->get_field_name( 'view' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $view ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $view ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $view ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'random_sort' ); ?>"><?php _e( 'Random Order:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <select id="<?php echo $this->get_field_id( 'random_sort' ); ?>"
-                        name="<?php echo $this->get_field_name( 'random_sort' ); ?>">
-                        <option value="0"<?php if ( ! $random_sort ) {
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'random_sort' ); ?>">
+										<?php
+										_e(
+											'Random Order:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<select id="<?php echo $this->get_field_id( 'random_sort' ); ?>"
+						name="<?php echo $this->get_field_name( 'random_sort' ); ?>">
+						<option value="0"
+						<?php
+						if ( ! $random_sort ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
-                        <option value="1"<?php if ( $random_sort ) {
+						}
+						?>
+						><?php _e( 'False', FB_RSSI_TEXTDOMAIN ); ?></option>
+						<option value="1"
+						<?php
+						if ( $random_sort ) {
 							echo ' selected="selected"';
-						} ?>><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
-                    </select>
-                </label>
-            </p>
-            <p>
-                <label for="<?php echo $this->get_field_id( 'order' ); ?>"><?php _e( 'Order for Date, Title, Creator, Description:',
-						FB_RSSI_TEXTDOMAIN ) ?>
-                    <input class="widefat code"
-                        id="<?php echo $this->get_field_id( 'order' ); ?>"
-                        name="<?php echo $this->get_field_name( 'order' ); ?>"
-                        type="text"
-                        value="<?php echo $order; ?>" /></label>
-                <br />
-                <small><?php _e( 'Use a comma separated string for your order. On default, it is',
-						FB_RSSI_TEXTDOMAIN ); ?> <code>date,title,creator,description</code></small>
-            </p>
+						}
+						?>
+						><?php _e( 'True', FB_RSSI_TEXTDOMAIN ); ?></option>
+					</select>
+				</label>
+			</p>
+			<p>
+				<label for="<?php echo $this->get_field_id( 'order' ); ?>">
+										<?php
+										_e(
+											'Order for Date, Title, Creator, Description:',
+											FB_RSSI_TEXTDOMAIN
+										)
+										?>
+					<input class="widefat code"
+						id="<?php echo $this->get_field_id( 'order' ); ?>"
+						name="<?php echo $this->get_field_name( 'order' ); ?>"
+						type="text"
+						value="<?php echo $order; ?>" /></label>
+				<br />
+				<small>
+				<?php
+				_e(
+					'Use a comma separated string for your order. On default, it is',
+					FB_RSSI_TEXTDOMAIN
+				);
+				?>
+						<code>date,title,creator,description</code></small>
+			</p>
 			<?php
 		}
 	}
 
-	add_action( 'widgets_init', function() { register_widget("RSSImport_Widget"); } );
+	add_action(
+		'widgets_init',
+		function () {
+			register_widget( 'RSSImport_Widget' );
+		}
+	);
 } // end if class wp_widget exists
